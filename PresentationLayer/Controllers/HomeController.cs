@@ -1,8 +1,8 @@
-﻿using CalCalc.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PresentationLayer.Models;
 using System.Diagnostics;
 
-namespace CalCalc.Controllers
+namespace PresentationLayer.Controllers
 {
     public class HomeController : Controller
     {
