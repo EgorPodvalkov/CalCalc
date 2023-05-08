@@ -12,24 +12,39 @@ public class DishRepository : IRepository<Dish>
     public DishRepository(CalCalcContext calCalcContext)
         => _context = calCalcContext;
 
-    public IEnumerable<Dish> GetAll()
-        => _context.Dishes;
+    public async Task<ICollection<Dish>> GetAllAsync()
+        => await _context.Set<Dish>().Select(x => x).ToListAsync();
 
-    public Dish Get(int id)
-        => _context.Dishes.First(x => x.Id == id);
+    public async Task<Dish> GetAsync(int id)
+        => await _context.Set<Dish>().FirstAsync(x => x.Id == id);
 
-    public IEnumerable<Dish> Find(Func<Dish, bool> predicate)
-        => _context.Dishes.Where(predicate);
-
-    public void Create(Dish entity)
-        => _context.Dishes.Add(entity);
-
-    public void Update(Dish entity)
-        => _context.Entry(entity).State = EntityState.Modified;
-    public void Delete(int id)
+    public async Task<ICollection<Dish>> FindAsync(Func<Dish, bool> predicate)
     {
-        var dish = Get(id);
-        if (dish != null)
-            _context.Dishes.Remove(dish);
+        var entities = await GetAllAsync();
+        return entities.Where(predicate).ToList();
+    }
+
+    public async Task CreateAsync(Dish entity)
+    {
+        await _context.Set<Dish>().AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Dish entity)
+    {
+        _context.Set<Dish>().Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var entity = await GetAsync(id);
+        await DeleteAsync(entity);
+    }
+
+    public async Task DeleteAsync(Dish entity)
+    {
+        _context.Set<Dish>().Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }

@@ -1,11 +1,14 @@
-﻿namespace DataAccessLayer.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace DataAccessLayer.Interfaces;
 
 public interface IRepository<T> where T : class
 {
-    IEnumerable<T> GetAll();
-    T Get(int id);
-    IEnumerable<T> Find(Func<T, Boolean> predicate);
-    void Create(T entity);
-    void Update(T entity);
-    void Delete(int id);
+    Task<ICollection<T>> GetAllAsync();
+    Task<T> GetAsync(int id);
+    Task<ICollection<T>> FindAsync(Func<T, Boolean> predicate);
+    Task CreateAsync(T entity);
+    Task UpdateAsync(T entity);
+    Task DeleteAsync(int id);
+    Task DeleteAsync(T entity);
 }

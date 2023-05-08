@@ -12,24 +12,39 @@ public class DailyUserInfoRepository : IRepository<DailyUserInfo>
     public DailyUserInfoRepository(CalCalcContext calCalcContext)
         => _context = calCalcContext;
 
-    public IEnumerable<DailyUserInfo> GetAll()
-        => _context.DailyUsersInfo;
+    public async Task<ICollection<DailyUserInfo>> GetAllAsync()
+        => await _context.Set<DailyUserInfo>().Select(x => x).ToListAsync();
 
-    public DailyUserInfo Get(int id)
-        => _context.DailyUsersInfo.First(x => x.Id == id);
+    public async Task<DailyUserInfo> GetAsync(int id)
+        => await _context.Set<DailyUserInfo>().FirstAsync(x => x.Id == id);
 
-    public IEnumerable<DailyUserInfo> Find(Func<DailyUserInfo, bool> predicate)
-        => _context.DailyUsersInfo.Where(predicate);
-
-    public void Create(DailyUserInfo entity)
-        => _context.DailyUsersInfo.Add(entity);
-
-    public void Update(DailyUserInfo entity)
-        => _context.Entry(entity).State = EntityState.Modified;
-    public void Delete(int id)
+    public async Task<ICollection<DailyUserInfo>> FindAsync(Func<DailyUserInfo, bool> predicate)
     {
-        var dailyUserInfo = Get(id);
-        if (dailyUserInfo != null)
-            _context.DailyUsersInfo.Remove(dailyUserInfo);
+        var entities = await GetAllAsync();
+        return entities.Where(predicate).ToList();
+    }
+
+    public async Task CreateAsync(DailyUserInfo entity)
+    {
+        await _context.Set<DailyUserInfo>().AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(DailyUserInfo entity)
+    {
+        _context.Set<DailyUserInfo>().Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var entity = await GetAsync(id);
+        await DeleteAsync(entity);
+    }
+
+    public async Task DeleteAsync(DailyUserInfo entity)
+    {
+        _context.Set<DailyUserInfo>().Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }
