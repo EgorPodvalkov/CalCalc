@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DataAccessLayer.Interfaces;
+﻿namespace DataAccessLayer.Interfaces;
 
 public interface IRepository<T> where T : class
 {
