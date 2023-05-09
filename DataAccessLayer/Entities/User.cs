@@ -2,7 +2,7 @@
 
 public class User : BaseEntity
 {
-    public int Ip { get; set; }
+    public string Ip { get; set; }
 
     public virtual ICollection<DailyUserInfo> DailyUsersInfo { get; set; }
 }

@@ -10,7 +10,7 @@ public class DailyUserInfoConfiguration : IEntityTypeConfiguration<DailyUserInfo
     {
         // Id Colunm
         builder.HasIndex(x => x.Id);
-        builder.Property(x => x.Id).IsRequired();
+        // builder.Property(x => x.Id).IsRequired();
 
         // Date Column
         builder.Property(x => x.Date).IsRequired();
@@ -18,11 +18,14 @@ public class DailyUserInfoConfiguration : IEntityTypeConfiguration<DailyUserInfo
         // KCalorieReal Column
         builder.Property(x => x.KCalorieReal).IsRequired();
 
+        // IdUser Column
+        builder.Property(x => x.UserId).IsRequired();
+
         // One to Many - User to DailyUsersInfo
         builder
             .HasOne(x => x.User)
             .WithMany(x => x.DailyUsersInfo)
-            .HasForeignKey(x => x.Id)
+            .HasForeignKey(x => x.UserId)
             .HasPrincipalKey(x => x.Id);
 
         // Many to Many - DailyUsersInfo to Dishes

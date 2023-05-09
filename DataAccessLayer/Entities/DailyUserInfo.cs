@@ -7,6 +7,8 @@ public class DailyUserInfo : BaseEntity
     public decimal KCalorieReal { get; set; }
     public int? KCalorieGoal { get; set; }
 
+    public int UserId { get; set; }
+
     public virtual User User { get; set; }
     public virtual ICollection<Dish>? Dishes { get; set; }
 }
