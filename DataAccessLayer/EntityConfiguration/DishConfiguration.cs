@@ -10,7 +10,6 @@ public class DishConfiguration : IEntityTypeConfiguration<Dish>
     {
         // Id Column
         builder.HasIndex(x => x.Id);
-        builder.Property(x => x.Id).IsRequired();
 
         // Name Column
         builder.Property(x => x.Name).IsRequired();

@@ -10,7 +10,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         // Id Column
         builder.HasIndex(x => x.Id);
-        builder.Property(x => x.Id).IsRequired();
 
         // Ip Column
         builder.Property(x => x.Ip).IsRequired();
