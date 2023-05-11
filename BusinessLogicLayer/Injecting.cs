@@ -17,6 +17,8 @@ public static class Injecting
             options.UseSqlServer(
                 configuration["ConnectionString"]);
         });
+        services.AddScoped<DailyUserInfoService>();
         services.AddScoped<UserService>();
+        services.AddScoped<DishService>();
     }
 }
