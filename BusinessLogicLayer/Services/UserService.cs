@@ -1,61 +1,32 @@
-﻿using DataAccessLayer.DbStartUp;
-using DataAccessLayer.Entities;
+﻿using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Models;
+using DataAccessLayer.DbStartUp;
+using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
 
 namespace BusinessLogicLayer.Services;
 
-public class UserService
+public class UserService : IUserService
 {
-    private readonly UserRepository _userRepository;
-    private readonly DailyUserInfoRepository _dailyUserInfoRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserService(CalCalcContext context)
     {
         _userRepository = new UserRepository(context);
-        _dailyUserInfoRepository = new DailyUserInfoRepository(context);
     }
 
-    public async Task AddUser(User user)
+    public async Task AddUser(UserModel user)
     {
-        await _userRepository.CreateAsync(user);
+        await _userRepository.CreateAsync(user.ToEntity());
     }
 
-    public async Task<ICollection<User>> GetUsers()
+    public async Task<ICollection<UserModel>> GetUsers()
     {
-        return await _userRepository.GetAllAsync();
+        return (await _userRepository.GetAllAsync()).ToModelCollection();
     }
 
-    public async Task<ICollection<DailyUserInfo>> GetUserInfo(User user)
+    public async Task<UserModel> GetUserById(int id)
     {
-        return await _dailyUserInfoRepository.FindAsync(x => x.User == user);
-    }
-
-    public async Task<DailyUserInfo?> GetUserInfo(User user, DateTime date)
-    {
-        var userInfo = await GetUserInfo(user);
-        var dailyUserInfo = userInfo.FirstOrDefault(x => x.Date == date);
-        if (dailyUserInfo == null)
-        {
-            dailyUserInfo = new DailyUserInfo()
-            {
-                Date = date,
-                KCalorieReal = 0,
-                User = user,
-                Dishes = new List<Dish>()
-            };
-            await _dailyUserInfoRepository.CreateAsync(dailyUserInfo);
-        }
-        return dailyUserInfo;
-    }
-
-    public async Task<DailyUserInfo> GetTodayUserInfo(User user)
-    {
-        return await GetUserInfo(user, DateTime.Today);
-    }
-
-    public async Task AddDishToUser(User user, Dish dish)
-    {
-        var todayUserInfo = await GetTodayUserInfo(user);
-        todayUserInfo.Dishes.Add(dish);
+        return (await _userRepository.GetAllAsync()).First(x => x.Id == id).ToModel();
     }
 }
