@@ -1,9 +1,7 @@
 ﻿using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
-using DataAccessLayer.DbStartUp;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
-using DataAccessLayer.Repositories;
 
 namespace BusinessLogicLayer.Services;
 
@@ -11,9 +9,9 @@ public class DailyUserInfoService : IDailyUserInfoService
 {
     private readonly IDailyUserInfoRepository _dailyUserInfoRepository;
 
-    public DailyUserInfoService(CalCalcContext context)
+    public DailyUserInfoService(IDailyUserInfoRepository dailyUserInfoRepository)
     {
-        _dailyUserInfoRepository = new DailyUserInfoRepository(context);
+        _dailyUserInfoRepository = dailyUserInfoRepository;
     }
 
     public async Task<DailyUserInfoModel> CreateDailyUserInfo(int userId, DateTime date)

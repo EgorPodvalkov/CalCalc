@@ -1,8 +1,6 @@
 ﻿using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
-using DataAccessLayer.DbStartUp;
 using DataAccessLayer.Interfaces;
-using DataAccessLayer.Repositories;
 
 namespace BusinessLogicLayer.Services;
 
@@ -10,9 +8,9 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 
-    public UserService(CalCalcContext context)
+    public UserService(IUserRepository userRepository)
     {
-        _userRepository = new UserRepository(context);
+        _userRepository = userRepository;
     }
 
     public async Task AddUser(UserModel user)
