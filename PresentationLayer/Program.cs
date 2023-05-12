@@ -1,4 +1,12 @@
+using BusinessLogicLayer;
+using DataAccessLayer.DbStartUp;
+
 var builder = WebApplication.CreateBuilder(args);
+
+IConfiguration configuration = builder.Configuration;
+
+builder.Services.InjectDAL(configuration);
+builder.Services.InjectBLL();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

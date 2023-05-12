@@ -1,23 +1,15 @@
 ﻿using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Services;
-using DataAccessLayer.DbStartUp;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogicLayer;
 
-public static class Injecting
+public static class InjectingBLL
 {
-    public static void Inject(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static void InjectBLL(
+        this IServiceCollection services)
     {
-        services.AddDbContext<CalCalcContext>(options =>
-        {
-            options.UseSqlServer(
-                configuration["ConnectionString"]);
-        });
         services.AddScoped<IDailyUserInfoService, DailyUserInfoService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDishService, DishService>();
