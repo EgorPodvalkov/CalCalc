@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Services;
+﻿using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Services;
 using DataAccessLayer.DbStartUp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,8 @@ public static class Injecting
             options.UseSqlServer(
                 configuration["ConnectionString"]);
         });
-        services.AddScoped<UserService>();
+        services.AddScoped<IDailyUserInfoService, DailyUserInfoService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IDishService, DishService>();
     }
 }

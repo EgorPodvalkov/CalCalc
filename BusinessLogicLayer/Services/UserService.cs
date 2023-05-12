@@ -17,6 +17,9 @@ public class UserService : IUserService
 
     public async Task AddUser(UserModel user)
     {
+        if (user.RegistrationDate == new DateTime())
+            user.RegistrationDate = DateTime.Today;
+
         await _userRepository.CreateAsync(user.ToEntity());
     }
 

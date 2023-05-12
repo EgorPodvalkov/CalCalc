@@ -62,6 +62,9 @@ public class DailyUserInfoService : IDailyUserInfoService
         // Adding Dish
         todayUserInfo.Dishes.Add(dish);
 
+        // Adding Calories
+        todayUserInfo.KCalorieReal += dish.KCalorie;
+
         // Updating DB
         await _dailyUserInfoRepository.UpdateAsync(todayUserInfo.ToEntity());
     }
@@ -76,13 +79,17 @@ public class DailyUserInfoService : IDailyUserInfoService
             todayUserInfo.Dishes = new List<DishModel>();
 
         // False if bad index
-        if (dishIndex >= todayUserInfo.Dishes.Count && dishIndex < 0)
+        if (dishIndex >= todayUserInfo.Dishes.Count || dishIndex < 0)
             return false;
 
         // Removing Dish
         var list = todayUserInfo.Dishes.ToList();
+        var dish = list[dishIndex];
         list.RemoveAt(dishIndex);
         todayUserInfo.Dishes = list;
+
+        // Removing Calories
+        todayUserInfo.KCalorieReal += dish.KCalorie;
 
         // Updating DB
         await _dailyUserInfoRepository.UpdateAsync(todayUserInfo.ToEntity());
