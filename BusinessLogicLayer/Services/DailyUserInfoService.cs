@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Interfaces;
+﻿using AutoMapper;
+using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
@@ -8,10 +9,12 @@ namespace BusinessLogicLayer.Services;
 public class DailyUserInfoService : IDailyUserInfoService
 {
     private readonly IDailyUserInfoRepository _dailyUserInfoRepository;
+    private readonly IMapper _mapper;
 
-    public DailyUserInfoService(IDailyUserInfoRepository dailyUserInfoRepository)
+    public DailyUserInfoService(IDailyUserInfoRepository dailyUserInfoRepository, IMapper mapper)
     {
         _dailyUserInfoRepository = dailyUserInfoRepository;
+        _mapper = mapper;
     }
 
     public async Task<DailyUserInfoModel> CreateDailyUserInfo(int userId, DateTime date)
@@ -23,14 +26,13 @@ public class DailyUserInfoService : IDailyUserInfoService
             UserId = userId,
         };
         await _dailyUserInfoRepository.CreateAsync(dailyUserInfo);
-        return dailyUserInfo.ToModel();
+        return _mapper.Map<DailyUserInfoModel>(dailyUserInfo);
     }
 
     public async Task<ICollection<DailyUserInfoModel>> GetUserInfo(int userId)
     {
-        return (await _dailyUserInfoRepository
-            .FindAsync(x => x.UserId == userId))
-            .ToModelCollection();
+        var userInfo = await _dailyUserInfoRepository.FindAsync(x => x.UserId == userId);
+        return _mapper.Map<ICollection<DailyUserInfoModel>>(userInfo);
     }
 
     public async Task<DailyUserInfoModel> GetDailyUserInfo(int userId, DateTime date)
@@ -48,49 +50,51 @@ public class DailyUserInfoService : IDailyUserInfoService
         return await GetDailyUserInfo(userId, DateTime.Today);
     }
 
-    public async Task AddDishToUser(int userId, DishModel dish)
+    public async Task AddDishToUser(int userId, DishModel dishModel)
     {
         // Getting Info
-        var todayUserInfo = await GetTodayUserInfo(userId);
+        var todayUserInfoModel = await GetTodayUserInfo(userId);
         
         // Creating List if no Dishes
-        if (todayUserInfo.Dishes == null)
-            todayUserInfo.Dishes = new List<DishModel>();
+        if (todayUserInfoModel.Dishes == null)
+            todayUserInfoModel.Dishes = new List<DishModel>();
 
         // Adding Dish
-        todayUserInfo.Dishes.Add(dish);
+        todayUserInfoModel.Dishes.Add(dishModel);
 
         // Adding Calories
-        todayUserInfo.KCalorieReal += dish.KCalorie;
+        todayUserInfoModel.KCalorieReal += dishModel.KCalorie;
 
         // Updating DB
-        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo.ToEntity());
+        var todayUserInfo = _mapper.Map<DailyUserInfo>(todayUserInfoModel);
+        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo);
     }
 
     public async Task<bool> RemoveDishFromUser(int userId, int dishIndex)
     {
         // Getting Info
-        var todayUserInfo = await GetTodayUserInfo(userId);
+        var todayUserInfoModel = await GetTodayUserInfo(userId);
 
         // Creating List if no Dishes
-        if (todayUserInfo.Dishes == null)
-            todayUserInfo.Dishes = new List<DishModel>();
+        if (todayUserInfoModel.Dishes == null)
+            todayUserInfoModel.Dishes = new List<DishModel>();
 
         // False if bad index
-        if (dishIndex >= todayUserInfo.Dishes.Count || dishIndex < 0)
+        if (dishIndex >= todayUserInfoModel.Dishes.Count || dishIndex < 0)
             return false;
 
         // Removing Dish
-        var list = todayUserInfo.Dishes.ToList();
-        var dish = list[dishIndex];
+        var list = todayUserInfoModel.Dishes.ToList();
+        var dishModel = list[dishIndex];
         list.RemoveAt(dishIndex);
-        todayUserInfo.Dishes = list;
+        todayUserInfoModel.Dishes = list;
 
         // Removing Calories
-        todayUserInfo.KCalorieReal += dish.KCalorie;
+        todayUserInfoModel.KCalorieReal += dishModel.KCalorie;
 
         // Updating DB
-        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo.ToEntity());
+        var todayUserInfo = _mapper.Map<DailyUserInfo>(todayUserInfoModel);
+        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo);
         return true;
     }
 }
