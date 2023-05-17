@@ -13,5 +13,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         // Ip Column
         builder.Property(x => x.Ip).IsRequired();
+
+        // Date Column
+        builder.Property(x => x.RegistrationDate).IsRequired();
     }
 }

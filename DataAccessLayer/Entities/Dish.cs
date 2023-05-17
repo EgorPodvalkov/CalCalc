@@ -13,5 +13,5 @@ public class Dish : BaseEntity
 
     public string? Recipe { get; set; }
 
-    public ICollection<DailyUserInfo>? DailyUsersInfo { get; set; }
+    public ICollection<DailyUserInfo> DailyUsersInfo { get; set; } = new List<DailyUserInfo>();
 }

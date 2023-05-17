@@ -23,7 +23,7 @@ public class DailyUserInfoConfiguration : IEntityTypeConfiguration<DailyUserInfo
         // One to Many - User to DailyUsersInfo
         builder
             .HasOne(x => x.User)
-            .WithMany(x => x.DailyUsersInfo)
+            .WithMany(x => x.DailyUserInfos)
             .HasForeignKey(x => x.UserId)
             .HasPrincipalKey(x => x.Id);
 

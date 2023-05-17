@@ -10,5 +10,5 @@ public class DailyUserInfo : BaseEntity
     public int UserId { get; set; }
 
     public virtual User User { get; set; }
-    public virtual ICollection<Dish>? Dishes { get; set; }
+    public virtual ICollection<Dish> Dishes { get; set; } = new List<Dish>();
 }
