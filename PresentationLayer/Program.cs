@@ -21,6 +21,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    try
+    {
+        var context = serviceProvider.GetRequiredService<CalCalcContext>();
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception exception)
+    {
+        throw exception;
+    }
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
