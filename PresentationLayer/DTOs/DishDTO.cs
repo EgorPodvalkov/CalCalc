@@ -1,6 +1,6 @@
-﻿namespace BusinessLogicLayer.Models;
+﻿namespace PresentationLayer.DTOs;
 
-public class DishModel
+public class DishDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -12,5 +12,5 @@ public class DishModel
     public string Protein { get; set; }
     public string? Recipe { get; set; }
 
-    public ICollection<DailyUserInfoModel> DailyUsersInfo { get; set; } = new List<DailyUserInfoModel>();
+    public ICollection<DailyUserInfoDTO> DailyUsersInfo { get; set; } = new List<DailyUserInfoDTO>();
 }

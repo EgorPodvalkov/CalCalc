@@ -1,5 +1,6 @@
 using BusinessLogicLayer;
 using DataAccessLayer.DbStartUp;
+using PresentationLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ IConfiguration configuration = builder.Configuration;
 
 builder.Services.InjectDAL(configuration);
 builder.Services.InjectBLL();
+builder.Services.AddAutoMapper(typeof(PLMappingProfile));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -44,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=TodayInfo}/{action=Info}/{id?}");
 
 app.Run();
