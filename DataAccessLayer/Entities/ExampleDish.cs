@@ -1,6 +1,6 @@
 ﻿namespace DataAccessLayer.Entities;
 
-public class Dish : BaseEntity
+public class ExampleDish : BaseEntity
 {
     public string Name { get; set; }
     public decimal KCalorie { get; set; }
@@ -13,5 +13,5 @@ public class Dish : BaseEntity
 
     public string? Recipe { get; set; }
 
-    public ICollection<DailyUserInfo> DailyUsersInfo { get; set; } = new List<DailyUserInfo>();
+    public ICollection<EatenDish> EatenDishes { get; set; } = new List<EatenDish>();
 }

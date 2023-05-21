@@ -22,10 +22,13 @@
                     goal = $" / {dailyInfo.KCalorieGoal}";
             }
             @dailyInfo.Date.ToString("d"), @dailyInfo.KCalorieReal@goal kcal
-            @foreach (var dish in dailyInfo.Dishes)
+            @foreach (var dish in dailyInfo.EatenDishes)
             {
+                var quantity = "";
+                if (dish.Quantity > 1)
+                    quantity = $"| x{dish.Quantity} |";
                 <p>
-                    @dish.Name - @dish.KCalorie kcal
+                    @dish.Name - @dish.KCalorie kcal @quantity
                 </p>
             }
         </div><br />

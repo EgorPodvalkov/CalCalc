@@ -12,5 +12,7 @@ public class DishDTO
     public string Protein { get; set; }
     public string? Recipe { get; set; }
 
+    public int Quantity { get; set; }
+
     public ICollection<DailyUserInfoDTO> DailyUsersInfo { get; set; } = new List<DailyUserInfoDTO>();
 }

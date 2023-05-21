@@ -14,7 +14,7 @@ public class DailyUserInfoRepository : BaseRepository<DailyUserInfo>, IDailyUser
         return await _context.Set<DailyUserInfo>()
             .Select(x => x)
             .Where(x => x.UserId == userId)
-            .Include(x => x.Dishes)
+            .Include(x => x.EatenDishes)
             .ToListAsync();
 
     }

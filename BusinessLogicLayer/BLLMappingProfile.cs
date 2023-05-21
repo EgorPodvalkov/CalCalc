@@ -15,8 +15,30 @@ public class BLLMappingProfile : Profile
         CreateMap<UserModel, User>()
             .ReverseMap();
 
-        CreateMap<DishModel, Dish>()
+        CreateMap<DishModel, ExampleDish>()
             .ReverseMap();
+
+        CreateMap<EatenDish, DishModel>()
+            .ForMember(dest => dest.Id, opt => opt
+                .MapFrom(src => src.ExampleDish.Id))
+            .ForMember(dest => dest.Name, opt => opt
+                .MapFrom(src => src.ExampleDish.Name))
+            .ForMember(dest => dest.KCalorie, opt => opt
+                .MapFrom(src => src.ExampleDish.KCalorie))
+            .ForMember(dest => dest.ServingSize, opt => opt
+                .MapFrom(src => src.ExampleDish.ServingSize))
+            .ForMember(dest => dest.TotalFat, opt => opt
+                .MapFrom(src => src.ExampleDish.TotalFat))
+            .ForMember(dest => dest.SaturatedFat, opt => opt
+                .MapFrom(src => src.ExampleDish.SaturatedFat))
+            .ForMember(dest => dest.Carbohydrates, opt => opt
+                .MapFrom(src => src.ExampleDish.Carbohydrates))
+            .ForMember(dest => dest.Protein, opt => opt
+                .MapFrom(src => src.ExampleDish.Protein))
+            .ForMember(dest => dest.Recipe, opt => opt
+                .MapFrom(src => src.ExampleDish.Recipe))
+            .ForMember(dest => dest.Quantity, opt => opt
+                .MapFrom(src => src.Quantity));
 
         CreateMap<DishDeserialized, DishModel>()
             .ForMember(dest => dest.ServingSize, opt => opt

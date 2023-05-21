@@ -10,5 +10,5 @@ public class DailyUserInfoModel
     public int UserId { get; set; }
 
     public UserModel User { get; set; }
-    public ICollection<DishModel> Dishes { get; set; } = new List<DishModel>();
+    public ICollection<DishModel> EatenDishes { get; set; } = new List<DishModel>();
 }

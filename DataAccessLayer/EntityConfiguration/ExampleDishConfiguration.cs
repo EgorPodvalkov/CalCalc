@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccessLayer.EntityConfiguration;
 
-public class DishConfiguration : IEntityTypeConfiguration<Dish>
+public class ExampleDishConfiguration : IEntityTypeConfiguration<ExampleDish>
 {
-    public void Configure(EntityTypeBuilder<Dish> builder)
+    public void Configure(EntityTypeBuilder<ExampleDish> builder)
     {
         // Id Column
         builder.HasIndex(x => x.Id);
@@ -37,5 +37,12 @@ public class DishConfiguration : IEntityTypeConfiguration<Dish>
         // Protein Column
         builder.Property(x => x.Protein).IsRequired();
         builder.Property(x => x.Protein).HasMaxLength(10);
+
+        // One to Many - ExampleDish to EatenDishes
+        builder
+            .HasMany(x => x.EatenDishes)
+            .WithOne(x => x.ExampleDish)
+            .HasForeignKey(x => x.ExampleDishId)
+            .HasPrincipalKey(x => x.Id);
     }
 }

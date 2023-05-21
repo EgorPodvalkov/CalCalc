@@ -27,9 +27,11 @@ public class DailyUserInfoConfiguration : IEntityTypeConfiguration<DailyUserInfo
             .HasForeignKey(x => x.UserId)
             .HasPrincipalKey(x => x.Id);
 
-        // Many to Many - DailyUsersInfo to Dishes
+        // One to Many - DailyUserInfo to EatenDishes
         builder
-            .HasMany(x => x.Dishes)
-            .WithMany(x => x.DailyUsersInfo);
+            .HasMany(x => x.EatenDishes)
+            .WithOne(x => x.DailyUserInfo)
+            .HasForeignKey(x => x.DailyUserInfoId)
+            .HasPrincipalKey (x => x.Id);
     }
 }

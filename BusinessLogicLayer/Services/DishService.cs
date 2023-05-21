@@ -26,7 +26,7 @@ public class DishService : IDishService
 
     public async Task AddDishAsync(DishModel dishModel)
     {
-        var dish = _mapper.Map<Dish>(dishModel);
+        var dish = _mapper.Map<ExampleDish>(dishModel);
         await _dishRepository.CreateAsync(dish);
     }
 

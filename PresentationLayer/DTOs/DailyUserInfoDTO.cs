@@ -10,5 +10,5 @@ public class DailyUserInfoDTO
     public int UserId { get; set; }
 
     public UserDTO User { get; set; }
-    public ICollection<DishDTO> Dishes { get; set; } = new List<DishDTO>();
+    public ICollection<DishDTO> EatenDishes { get; set; } = new List<DishDTO>();
 }

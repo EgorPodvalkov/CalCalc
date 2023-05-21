@@ -93,12 +93,26 @@ public class DailyUserInfoService : IDailyUserInfoService
 
         // Adding Dish
         var dish = await _dishRepository.GetAsync(dishId);
-        todayInfo.Dishes.Add(dish);
+
+        var additionDish = todayInfo.EatenDishes.FirstOrDefault(x => x.ExampleDish.Id == dishId);
+
+        if (additionDish == null)
+        {
+            todayInfo.EatenDishes.Add(new EatenDish()
+            {
+                DailyUserInfoId = todayInfo.Id,
+                ExampleDishId = dishId,
+            });
+        }
+        else
+            additionDish.Quantity++;
+
         todayInfo.KCalorieReal += dish.KCalorie;
 
         // Updating
         await _dailyUserInfoRepository.UpdateAsync(todayInfo);
     }
+
     public async Task RemoveDishAsync(int userId, int dishIndex)
     {
         // Getting Today Info
@@ -115,9 +129,16 @@ public class DailyUserInfoService : IDailyUserInfoService
         }
 
         // Adding Dish
-        var dish = todayInfo.Dishes.ElementAt(dishIndex);
-        todayInfo.Dishes.Remove(dish);
-        todayInfo.KCalorieReal -= dish.KCalorie;
+        var dish = todayInfo.EatenDishes.ElementAt(dishIndex);
+
+        // Decrementing Quantity
+        if (todayInfo.EatenDishes.ElementAt(dishIndex).Quantity > 1)
+            todayInfo.EatenDishes.ElementAt(dishIndex).Quantity--;
+        // Deleting Dish
+        else
+            todayInfo.EatenDishes.Remove(dish);
+
+        todayInfo.KCalorieReal -= dish.ExampleDish.KCalorie;
 
         // Updating
         await _dailyUserInfoRepository.UpdateAsync(todayInfo);

@@ -33,10 +33,20 @@ namespace PresentationLayer.Controllers
 
         public async Task<IActionResult> Info()
         {
+            var dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetDishesAsync());
+
+            if (dishes.Count == 0)
+            {
+                await _dishService.AddDishAsync("Cheesecake pasta French fries boiled potato salad steak cutlet burger mushroom risotto bread");
+            }
+
+
             var ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             var user = await _userService.GetOrCreateUserByIpAsync(ip);
 
-            await _dailyUserInfoService.RemoveDishAsync(user.Id, 1);
+            //await _dailyUserInfoService.AddDishAsync(user.Id, 3);
+
+            //await _dailyUserInfoService.RemoveDishAsync(user.Id, 0);
 
             var info = await _dailyUserInfoService.GetUserInfoAsync(user);
             
