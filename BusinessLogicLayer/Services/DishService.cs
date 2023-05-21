@@ -7,7 +7,6 @@ using DataAccessLayer.Interfaces;
 using Flurl;
 using Flurl.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
 using System.Text.Json;
 
 namespace BusinessLogicLayer.Services;
@@ -25,13 +24,13 @@ public class DishService : IDishService
         _configuration = configuration;
     }
 
-    public async Task AddDish(DishModel dishModel)
+    public async Task AddDishAsync(DishModel dishModel)
     {
         var dish = _mapper.Map<Dish>(dishModel);
         await _dishRepository.CreateAsync(dish);
     }
 
-    public async Task AddDish(string query)
+    public async Task AddDishAsync(string query)
     {
         // Getting JSON
         var json = await "https://api.calorieninjas.com/v1"
@@ -47,11 +46,11 @@ public class DishService : IDishService
         // Adding dishes if more then 0
         foreach (var dish in dishes)
         {
-            await AddDish(_mapper.Map<DishModel>(dish));
+            await AddDishAsync(_mapper.Map<DishModel>(dish));
         }
     }
 
-    public async Task<ICollection<DishModel>> GetDishes()
+    public async Task<ICollection<DishModel>> GetDishesAsync()
     {
         var dishes = await _dishRepository.GetAllAsync();
         return _mapper.Map<ICollection<DishModel>>(dishes);

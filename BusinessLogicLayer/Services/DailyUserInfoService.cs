@@ -3,98 +3,123 @@ using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
+using DataAccessLayer.Repositories;
 
 namespace BusinessLogicLayer.Services;
 
 public class DailyUserInfoService : IDailyUserInfoService
 {
     private readonly IDailyUserInfoRepository _dailyUserInfoRepository;
+    private readonly IDishRepository _dishRepository;
     private readonly IMapper _mapper;
 
-    public DailyUserInfoService(IDailyUserInfoRepository dailyUserInfoRepository, IMapper mapper)
+    public DailyUserInfoService(
+        IDailyUserInfoRepository dailyUserInfoRepository,
+        IDishRepository dishRepository,
+        IMapper mapper)
     {
         _dailyUserInfoRepository = dailyUserInfoRepository;
+        _dishRepository = dishRepository;
         _mapper = mapper;
     }
 
-    public async Task<DailyUserInfoModel> CreateDailyUserInfo(int userId, DateTime date)
+
+    private async Task<DailyUserInfo> CreateUserInfoAsync(int userId, DateTime date, int? kCaloryGoal = null)
     {
         var dailyUserInfo = new DailyUserInfo()
         {
             Date = date,
-            KCalorieReal = 0,
             UserId = userId,
+            KCalorieReal = 0,
+            KCalorieGoal = kCaloryGoal
         };
         await _dailyUserInfoRepository.CreateAsync(dailyUserInfo);
-        return _mapper.Map<DailyUserInfoModel>(dailyUserInfo);
-    }
-
-    public async Task<ICollection<DailyUserInfoModel>> GetUserInfo(int userId)
-    {
-        var userInfo = await _dailyUserInfoRepository.FindAsync(x => x.UserId == userId);
-        return _mapper.Map<ICollection<DailyUserInfoModel>>(userInfo);
-    }
-
-    public async Task<DailyUserInfoModel> GetDailyUserInfo(int userId, DateTime date)
-    {
-        var userInfo = await GetUserInfo(userId);
-
-        var dailyUserInfo = userInfo.FirstOrDefault(x => x.Date == date) 
-            ?? await CreateDailyUserInfo(userId, date);
-
         return dailyUserInfo;
     }
 
-    public async Task<DailyUserInfoModel> GetTodayUserInfo(int userId)
+    public async Task<ICollection<DailyUserInfoModel>> GetUserInfoAsync(UserModel user) 
     {
-        return await GetDailyUserInfo(userId, DateTime.Today);
+        var info = await _dailyUserInfoRepository.GetAllUserInfoWithDishesAsync(user.Id);
+        
+        var fullInfo = new List<DailyUserInfoModel>();
+
+        int? goal = null;
+        for (var day = user.RegistrationDate; day <= DateTime.Today; day = day.AddDays(1))
+        {
+            var dailyInfo = info.FirstOrDefault(x => x.Date ==  day)
+                ?? await CreateUserInfoAsync(user.Id, day, goal);
+
+            goal = dailyInfo.KCalorieGoal;
+
+            fullInfo.Add(_mapper.Map<DailyUserInfoModel>(dailyInfo));
+        }
+        return fullInfo;
     }
 
-    public async Task AddDishToUser(int userId, DishModel dishModel)
+    public async Task ChangeTodayGoalAsync(int userId, int kCaloryGoal)
     {
-        // Getting Info
-        var todayUserInfoModel = await GetTodayUserInfo(userId);
-        
-        // Creating List if no Dishes
-        if (todayUserInfoModel.Dishes == null)
-            todayUserInfoModel.Dishes = new List<DishModel>();
+        // Getting Today Info
+        var todayInfo = (await _dailyUserInfoRepository.GetAllAsync())
+            .Where(x => x.UserId == userId)
+            .FirstOrDefault(x => x.Date == DateTime.Today);
+
+        // Creating Today Info with right Goal if not Exist
+        if (todayInfo == null)
+        {
+            await CreateUserInfoAsync(userId, DateTime.Today, kCaloryGoal);
+        }
+        // Updateting Existing Info
+        else
+        {
+            todayInfo.KCalorieGoal = kCaloryGoal;
+            await _dailyUserInfoRepository.UpdateAsync(todayInfo);
+        }
+    }
+
+    public async Task AddDishAsync(int userId, int dishId)
+    {
+        // Getting Today Info
+        var todayInfo = (await _dailyUserInfoRepository.GetAllUserInfoWithDishesAsync(userId))
+            .FirstOrDefault(x => x.Date == DateTime.Today);
+
+        // Creating Today Info if not Exist
+        if (todayInfo == null)
+        {
+            await CreateUserInfoAsync(userId, DateTime.Today); 
+
+            todayInfo = (await _dailyUserInfoRepository.GetAllUserInfoWithDishesAsync(userId))
+            .First(x => x.Date == DateTime.Today);
+        }
 
         // Adding Dish
-        todayUserInfoModel.Dishes.Add(dishModel);
+        var dish = await _dishRepository.GetAsync(dishId);
+        todayInfo.Dishes.Add(dish);
+        todayInfo.KCalorieReal += dish.KCalorie;
 
-        // Adding Calories
-        todayUserInfoModel.KCalorieReal += dishModel.KCalorie;
-
-        // Updating DB
-        var todayUserInfo = _mapper.Map<DailyUserInfo>(todayUserInfoModel);
-        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo);
+        // Updating
+        await _dailyUserInfoRepository.UpdateAsync(todayInfo);
     }
-
-    public async Task<bool> RemoveDishFromUser(int userId, int dishIndex)
+    public async Task RemoveDishAsync(int userId, int dishIndex)
     {
-        // Getting Info
-        var todayUserInfoModel = await GetTodayUserInfo(userId);
+        // Getting Today Info
+        var todayInfo = (await _dailyUserInfoRepository.GetAllUserInfoWithDishesAsync(userId))
+            .FirstOrDefault(x => x.Date == DateTime.Today);
 
-        // Creating List if no Dishes
-        if (todayUserInfoModel.Dishes == null)
-            todayUserInfoModel.Dishes = new List<DishModel>();
+        // Creating Today Info if not Exist
+        if (todayInfo == null)
+        {
+            await CreateUserInfoAsync(userId, DateTime.Today);
 
-        // False if bad index
-        if (dishIndex >= todayUserInfoModel.Dishes.Count || dishIndex < 0)
-            return false;
+            todayInfo = (await _dailyUserInfoRepository.GetAllUserInfoWithDishesAsync(userId))
+            .First(x => x.Date == DateTime.Today);
+        }
 
-        // Removing Dish
-        var list = todayUserInfoModel.Dishes.ToList();
-        var dishModel = list[dishIndex];
-        list.RemoveAt(dishIndex);
-        todayUserInfoModel.Dishes = list;
+        // Adding Dish
+        var dish = todayInfo.Dishes.ElementAt(dishIndex);
+        todayInfo.Dishes.Remove(dish);
+        todayInfo.KCalorieReal -= dish.KCalorie;
 
-        // Removing Calories
-        todayUserInfoModel.KCalorieReal += dishModel.KCalorie;
-
-        // Updating DB
-        var todayUserInfo = _mapper.Map<DailyUserInfo>(todayUserInfoModel);
-        await _dailyUserInfoRepository.UpdateAsync(todayUserInfo);
-        return true;
+        // Updating
+        await _dailyUserInfoRepository.UpdateAsync(todayInfo);
     }
 }

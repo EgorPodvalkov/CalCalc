@@ -7,7 +7,7 @@ namespace DataAccessLayer.Repositories;
 
 public class BaseRepository<T> : IRepository<T> where T : BaseEntity
 {
-    private CalCalcContext _context;
+    internal CalCalcContext _context;
 
     public BaseRepository(CalCalcContext calCalcContext)
         => _context = calCalcContext;

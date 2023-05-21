@@ -4,7 +4,8 @@ namespace BusinessLogicLayer.Interfaces;
 
 public interface IUserService
 {
-    Task AddUser(UserModel user);
-    Task<ICollection<UserModel>> GetUsers();
-    Task<UserModel> GetUserById(int id);
+    Task AddUserAsync(UserModel user);
+    Task<ICollection<UserModel>> GetUsersAsync();
+    Task<UserModel> GetUserByIdAsync(int id);
+    Task<UserModel> GetOrCreateUserByIpAsync(string ip);
 }

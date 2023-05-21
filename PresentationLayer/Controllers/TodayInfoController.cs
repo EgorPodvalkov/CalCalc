@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using BusinessLogicLayer.Interfaces;
+using DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.DTOs;
 
@@ -30,8 +33,14 @@ namespace PresentationLayer.Controllers
 
         public async Task<IActionResult> Info()
         {
-            var dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetDishes());
-            return View(dishes);
+            var ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var user = await _userService.GetOrCreateUserByIpAsync(ip);
+
+            await _dailyUserInfoService.RemoveDishAsync(user.Id, 1);
+
+            var info = await _dailyUserInfoService.GetUserInfoAsync(user);
+            
+            return View(_mapper.Map<ICollection<DailyUserInfoDTO>>(info));
         }
     }
 }

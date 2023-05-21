@@ -47,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=TodayInfo}/{action=Info}/{id?}");
+    pattern: "{controller=TodayInfo}/{action=Info}");
 
 app.Run();

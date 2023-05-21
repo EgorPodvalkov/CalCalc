@@ -12,14 +12,16 @@ public static class InjectingDAL
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddTransient<IUserRepository, UserRepository>();
-        services.AddTransient<IDishRepository, DishRepository>();
-        services.AddTransient<IDailyUserInfoRepository, DailyUserInfoRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDishRepository, DishRepository>();
+        services.AddScoped<IDailyUserInfoRepository, DailyUserInfoRepository>();
 
         services.AddDbContext<CalCalcContext>(options =>
         {
             options.UseSqlServer(
                 configuration["ConnectionString"]);
+            options.EnableSensitiveDataLogging();
+            //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
     }
 }

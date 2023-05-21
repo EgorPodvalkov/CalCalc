@@ -1,0 +1,22 @@
+﻿@using PresentationLayer.DTOs
+@model ICollection<DishDTO>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Dishes</title>
+</head>
+<body>
+    <h2>Dishes</h2>
+    @foreach (var dish in Model)
+    {
+        <div>
+            @dish.Id.@dish.Name - @dish.KCalorie (Fat - @dish.TotalFat, Proteins - @dish.Protein, Carbongidrates - @dish.Carbohydrates)
+        </div>
+    }
+</body>
+</html>
