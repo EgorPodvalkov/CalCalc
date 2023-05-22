@@ -2,10 +2,7 @@
 
 namespace BusinessLogicLayer.Interfaces;
 
-public interface IUserService
+public interface IUserService : IBaseService<UserModel>
 {
-    Task AddUserAsync(UserModel user);
-    Task<ICollection<UserModel>> GetUsersAsync();
-    Task<UserModel> GetUserByIdAsync(int id);
     Task<UserModel> GetOrCreateUserByIpAsync(string ip);
 }

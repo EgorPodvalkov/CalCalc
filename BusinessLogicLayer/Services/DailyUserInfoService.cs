@@ -3,26 +3,23 @@ using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Models;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
-using DataAccessLayer.Repositories;
 
 namespace BusinessLogicLayer.Services;
 
-public class DailyUserInfoService : IDailyUserInfoService
+public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInfo>, IDailyUserInfoService
 {
     private readonly IDailyUserInfoRepository _dailyUserInfoRepository;
     private readonly IDishRepository _dishRepository;
-    private readonly IMapper _mapper;
 
     public DailyUserInfoService(
         IDailyUserInfoRepository dailyUserInfoRepository,
         IDishRepository dishRepository,
         IMapper mapper)
+        : base(dailyUserInfoRepository, mapper)
     {
         _dailyUserInfoRepository = dailyUserInfoRepository;
         _dishRepository = dishRepository;
-        _mapper = mapper;
     }
-
 
     private async Task<DailyUserInfo> CreateUserInfoAsync(int userId, DateTime date, int? kCaloryGoal = null)
     {

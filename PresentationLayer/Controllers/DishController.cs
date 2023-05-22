@@ -25,12 +25,12 @@ public class DishController : Controller
 
     public async Task<IActionResult> DishList()
     {
-        var dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetDishesAsync());
+        var dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetAllAsync());
         
         if (dishes.Count == 0)
         {
-            await _dishService.AddDishAsync("Cheesecake pasta French fries boiled potato salad steak cutlet burger mushroom risotto bread");
-            dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetDishesAsync());
+            await _dishService.AddDishesAsync("Cheesecake pasta French fries boiled potato salad steak cutlet burger mushroom risotto bread");
+            dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetAllAsync());
         }
 
         return View(dishes);

@@ -11,26 +11,20 @@ using System.Text.Json;
 
 namespace BusinessLogicLayer.Services;
 
-public class DishService : IDishService
+public class DishService : BaseService<DishModel, ExampleDish>, IDishService
 {
-    private readonly IDishRepository _dishRepository;
-    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
 
-    public DishService(IDishRepository dishRepository, IMapper mapper, IConfiguration configuration)
+    public DishService(
+        IDishRepository dishRepository, 
+        IConfiguration configuration,
+        IMapper mapper)
+        : base(dishRepository, mapper)
     {
-        _dishRepository = dishRepository;
-        _mapper = mapper;
         _configuration = configuration;
     }
 
-    public async Task AddDishAsync(DishModel dishModel)
-    {
-        var dish = _mapper.Map<ExampleDish>(dishModel);
-        await _dishRepository.CreateAsync(dish);
-    }
-
-    public async Task AddDishAsync(string query)
+    public async Task AddDishesAsync(string query)
     {
         // Getting JSON
         var json = await "https://api.calorieninjas.com/v1"
@@ -46,13 +40,7 @@ public class DishService : IDishService
         // Adding dishes if more then 0
         foreach (var dish in dishes)
         {
-            await AddDishAsync(_mapper.Map<DishModel>(dish));
+            await CreateAsync(_mapper.Map<DishModel>(dish));
         }
-    }
-
-    public async Task<ICollection<DishModel>> GetDishesAsync()
-    {
-        var dishes = await _dishRepository.GetAllAsync();
-        return _mapper.Map<ICollection<DishModel>>(dishes);
     }
 }

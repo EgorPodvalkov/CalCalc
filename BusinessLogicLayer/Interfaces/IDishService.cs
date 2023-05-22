@@ -2,9 +2,7 @@
 
 namespace BusinessLogicLayer.Interfaces;
 
-public interface IDishService
+public interface IDishService : IBaseService<DishModel>
 {
-    Task AddDishAsync(DishModel dish);
-    Task AddDishAsync(string query);
-    Task<ICollection<DishModel>> GetDishesAsync();
+    Task AddDishesAsync(string query);
 }

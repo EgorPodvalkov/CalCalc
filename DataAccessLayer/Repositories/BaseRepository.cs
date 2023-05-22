@@ -24,6 +24,12 @@ public class BaseRepository<T> : IRepository<T> where T : BaseEntity
         return entities.Where(predicate).ToList();
     }
 
+    public async Task<T?> FindFirstOrDefaultAsync(Func<T, Boolean> predicate)
+    {
+        var entities = await GetAllAsync();
+        return entities.FirstOrDefault(predicate);
+    }
+
     public async Task CreateAsync(T entity)
     {
         await _context.Set<T>().AddAsync(entity);
