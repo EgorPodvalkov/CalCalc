@@ -5,7 +5,7 @@ namespace BusinessLogicLayer.Interfaces;
 public interface IDailyUserInfoService : IBaseService<DailyUserInfoModel>
 {
     Task<ICollection<DailyUserInfoModel>> GetUserInfoAsync(UserModel user);
-    Task ChangeTodayGoalAsync(int userId, int kCaloryGoal);
+    Task ChangeTodayGoalAsync(int userId, int? kCaloryGoal);
     Task AddDishAsync(int userId, int dishId);
     Task RemoveDishAsync(int userId, int dishIndex);
 }

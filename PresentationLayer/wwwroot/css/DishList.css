@@ -1,0 +1,38 @@
+﻿body {
+    background-color: aliceblue;
+    font-size: 24px;
+    margin: 0px;
+}
+/*header*/
+.header {
+    padding: 6px;
+    position: relative;
+    height: 22px;
+    background-color: darkslategrey;
+}
+
+.header-link, .header-siteName {
+    position: absolute;
+    top: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    text-decoration: none;
+    color: gold;
+}
+
+    .header-link:hover, .header-siteName:hover {
+        text-shadow: 0 2px 18px black;
+    }
+
+.header-siteName {
+    left: 10px;
+}
+
+.header-link {
+    right: 10px;
+}
+/*search*/
+.search{
+
+}

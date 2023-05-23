@@ -1,5 +1,5 @@
 ﻿@using PresentationLayer.DTOs
-@model ICollection<DailyUserInfoDTO>
+@model DailyUserInfoDTO
 @{
     Layout = null;
 }
@@ -8,31 +8,64 @@
 
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>Info</title>
+    <link rel="stylesheet" href="~/css/Info.css" />
 </head>
 <body>
-    <a asp-area="" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
-    <div>User</div>
-    @foreach (var dailyInfo in Model)
-    {
-        <div>
-            @{
-                var goal = "";
-                if (dailyInfo.KCalorieGoal != null)
-                    goal = $" / {dailyInfo.KCalorieGoal}";
+    <div class="header">
+        <a class="header-siteName" asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
+        <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
+    </div>
+
+    <div class="shortInfo">
+        Today Progress
+        <div class="shortInfo-date">
+            @Model.Date.ToString("d")
+        </div>
+        @{
+            var goal = "";
+            var goalButton = "Add Calorie Goal";
+            if (Model.KCalorieGoal != null)
+            {
+                goal = $" / {Model.KCalorieGoal}";
+                goalButton = "Change Calorie Goal";
             }
-            @dailyInfo.Date.ToString("d"), @dailyInfo.KCalorieReal@goal kcal
-            @foreach (var dish in dailyInfo.EatenDishes)
+        }
+        <div class="shortInfo-calorie">
+            @Model.KCalorieReal@goal kcal
+        </div>
+        <div class="shortInfo-buttonsArea">
+        <input class="shortInfo-goalInput" type="number" min="0"/>
+         kcal 
+        <input class="shortInfo-goalButton" type="button" onclick="SetCalorieGoal()" value="@goalButton" />
+        </div>
+    </div>
+    <br />
+    <div class="eatenTable">
+        <a class="eatenTable-addingButton" asp-controller="Dish" asp-action="DishList">Add Food</a>
+        <table class="eatenTable-table">
+            @foreach (var dish in Model.EatenDishes)
             {
                 var quantity = "";
                 if (dish.Quantity > 1)
-                    quantity = $"| x{dish.Quantity} |";
-                <p>
-                    @dish.Name - @dish.KCalorie kcal @quantity
-                </p>
+                {
+                    quantity = $"x{dish.Quantity}";
+                }
+                
+                <tr>
+                    <td>@dish.Name</td>
+                    <td>@dish.KCalorie kcal</td>
+                    <td>@quantity</td>
+                    <td>
+                        <input class="eatenTable-table-removeButton" type ="button" value="-1" />
+                    </td>
+                </tr>
             }
-        </div><br />
-    }
+        </table>
+    </div>
+
+    <script src="~/js/Info.js"></script>
 </body>
 </html>
 

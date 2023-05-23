@@ -53,8 +53,11 @@ public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInf
         return fullInfo;
     }
 
-    public async Task ChangeTodayGoalAsync(int userId, int kCaloryGoal)
+    public async Task ChangeTodayGoalAsync(int userId, int? kCaloryGoal)
     {
+        if (kCaloryGoal <= 0)
+            kCaloryGoal = null;
+
         // Getting Today Info
         var todayInfo = (await _dailyUserInfoRepository.GetAllAsync())
             .Where(x => x.UserId == userId)

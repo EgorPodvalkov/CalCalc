@@ -1,0 +1,78 @@
+﻿body {
+    background-color: aliceblue;
+    font-size: 24px;
+    margin: 0px;
+}
+/*header*/
+.header {
+    padding: 6px;
+    position: relative;
+    height: 22px;
+    background-color: darkslategrey;
+}
+.header-link, .header-siteName {
+    position: absolute;
+    top: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    text-decoration: none;
+    color: gold;
+}
+.header-link:hover, .header-siteName:hover {
+  text-shadow: 0 2px 18px black;
+}
+.header-siteName{
+    left: 10px;
+}
+.header-link{
+    right: 10px;
+}
+/*shortInfo*/
+.shortInfo{
+    background-color:aquamarine;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 30px;
+    width: fit-content;
+    min-width: 300px;
+}
+.shortInfo-date{
+    font-size: 16px;
+}
+.shortInfo-calorie, .shortInfo-buttonsArea{
+    font-size: 20px;
+}
+.shortInfo-goalButton, .shortInfo-goalInput {
+    border-radius: 5px;
+    border: 0px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(104, 220, 184);
+}
+.shortInfo-goalInput{
+    width: 60px;
+}
+.shortInfo-goalButton{
+    margin-left: 25px;
+}
+/*eatenTable*/
+.eatenTable {
+    padding: 15px;
+}
+.eatenTable-addingButton {
+    border-radius: 5px;
+    border: 0px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: burlywood;
+    outline: none;
+    text-decoration: none;
+    color: black;
+    font-size:16px;
+}
+

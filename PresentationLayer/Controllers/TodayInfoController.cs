@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using BusinessLogicLayer.Interfaces;
-using DataAccessLayer.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.DTOs;
 
@@ -31,26 +28,35 @@ namespace PresentationLayer.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Info()
         {
-            var dishes = _mapper.Map<ICollection<DishDTO>>(await _dishService.GetAllAsync());
-
-            if (dishes.Count == 0)
-            {
-                await _dishService.AddDishesAsync("Cheesecake pasta French fries boiled potato salad steak cutlet burger mushroom risotto bread");
-            }
-
-
+            // Getting Ip
             var ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            var user = await _userService.GetOrCreateUserByIpAsync(ip);
-
-            //await _dailyUserInfoService.AddDishAsync(user.Id, 3);
-
-            //await _dailyUserInfoService.RemoveDishAsync(user.Id, 0);
-
-            var info = await _dailyUserInfoService.GetUserInfoAsync(user);
             
-            return View(_mapper.Map<ICollection<DailyUserInfoDTO>>(info));
+            // Getting User Info
+            var user = await _userService.GetOrCreateUserByIpAsync(ip);
+            var info = await _dailyUserInfoService.GetUserInfoAsync(user);
+            var todayInfo = info.First(info => info.Date == DateTime.Today);
+
+            // Rendering Page with Info
+            return View(_mapper.Map<DailyUserInfoDTO>(todayInfo));
+        }
+
+        [HttpPut]
+        [Route("/SetGoal")]
+        public async Task<IActionResult> SetGoal()
+        {
+            // Getting Goal
+            var goal = int.Parse(Request.Headers["goal"]);
+            
+            // Getting Ip
+            var ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            // Getting User Info
+            var user = await _userService.GetOrCreateUserByIpAsync(ip);
+            await _dailyUserInfoService.ChangeTodayGoalAsync(user.Id, goal);
+            return StatusCode(200);
         }
     }
 }

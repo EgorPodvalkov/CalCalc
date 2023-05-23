@@ -8,15 +8,40 @@
 
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>Dishes</title>
+    <link rel="stylesheet" href="~/css/DishList.css" />
 </head>
 <body>
+    <div class="header">
+        <a class="header-siteName" asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
+        <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
+    </div>
+    <input class="search" type="text" />
     <h2>Dishes</h2>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>KCalories</td>
+            <td>Proteins</td>
+            <td>Fat</td>
+            <td>Carbongidrates</td>
+        </tr>
     @foreach (var dish in Model)
     {
-        <div>
-            @dish.Id.@dish.Name - @dish.KCalorie (Fat - @dish.TotalFat, Proteins - @dish.Protein, Carbongidrates - @dish.Carbohydrates)
-        </div>
+        <tr>
+            <td>@dish.Name</td>
+            <td>@dish.KCalorie kcal</td>
+            <td>@dish.Protein</td>
+            <td>@dish.TotalFat</td>
+            <td>@dish.Carbohydrates</td>
+            <td>
+                <input type="button" value="Add to Eaten"/>
+            </td>
+
+        </tr>
     }
+
+    </table>
 </body>
 </html>
