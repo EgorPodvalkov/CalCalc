@@ -14,6 +14,7 @@ namespace BusinessLogicLayer.Services;
 public class DishService : BaseService<DishModel, ExampleDish>, IDishService
 {
     private readonly IConfiguration _configuration;
+    private readonly IDishRepository _dishRepository;
 
     public DishService(
         IDishRepository dishRepository, 
@@ -22,6 +23,7 @@ public class DishService : BaseService<DishModel, ExampleDish>, IDishService
         : base(dishRepository, mapper)
     {
         _configuration = configuration;
+        _dishRepository = dishRepository;
     }
 
     public async Task AddDishesAsync(string query)
@@ -42,5 +44,21 @@ public class DishService : BaseService<DishModel, ExampleDish>, IDishService
         {
             await CreateAsync(_mapper.Map<DishModel>(dish));
         }
+    }
+
+    public async Task<ICollection<DishModel>> GetAllAsync(DishFilterModel filter)
+    {
+        var dishesQuery = await _dishRepository.GetQueryable();
+        
+        dishesQuery = dishesQuery.Where(x => x.Name.Contains(filter.Search));
+
+        if (filter.MinCalorie != null)
+            dishesQuery = dishesQuery.Where(x => x.KCalorie >= filter.MinCalorie);
+
+        if (filter.MaxCalorie != null)
+            dishesQuery = dishesQuery.Where(x => x.KCalorie <= filter.MaxCalorie);
+
+
+        return _mapper.Map<ICollection<DishModel>>(dishesQuery);
     }
 }

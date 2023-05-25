@@ -4,4 +4,5 @@ namespace DataAccessLayer.Interfaces;
 
 public interface IDishRepository : IRepository<ExampleDish>
 {
+    Task<IQueryable<ExampleDish>> GetQueryable();
 }

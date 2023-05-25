@@ -18,33 +18,19 @@
         <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
     </div>
     <h2>Dishes</h2>
-    <div class="responce"></div>
-    <table>
-        <tr>
-            <td>
-                <table>
-                    <tr><td>Search</td></tr>
-                    <tr><td>
-                        <input class="search" type="text" />
-                    </td></tr>
-                </table>
-            </td>
-            <td>
-                <table class="calorie">
-                    <tr><td class="min-calorieHead">Min</td><td> - </td><td>Max</td></tr>
-                    <tr>
-                        <td>
-                            <input class="min-calorie" type="number" />
-                        </td>
-                        <td> - </td>
-                        <td>
-                            <input class="max-calorie" type="number" />
-                        </td>
-                    </tr>
-                </table>
-            </td>
+    
+    Search <br />
+    <input class="search" type="text" /><br />
+    
+    Min KCalories <br />
+    <input class="min-calorie" type="number" /> <br />
+    
+    Max KCalories <br />
+    <input class="max-calorie" type="number" /> <br />
 
-        </tr>
+    <div class="responce"></div>
+
+    <table class="table">
         <tr class="tableHead">
             <td>Name</td>
             <td>KCalories</td>
@@ -64,6 +50,7 @@
     }
 
     </table>
+    <div class="status"></div>
     <script src="~/js/DishList.js"></script>
 </body>
 </html>
