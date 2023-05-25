@@ -38,12 +38,10 @@
     padding-right: 30px;
     width: fit-content;
     min-width: 300px;
+    font-size: 23px;
 }
 .shortInfo-date{
     font-size: 16px;
-}
-.shortInfo-calorie, .shortInfo-buttonsArea{
-    font-size: 20px;
 }
 .shortInfo-goalButton, .shortInfo-goalInput {
     border-radius: 5px;

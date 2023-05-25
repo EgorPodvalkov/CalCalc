@@ -43,8 +43,7 @@ namespace PresentationLayer.Controllers
             return View(_mapper.Map<DailyUserInfoDTO>(todayInfo));
         }
 
-        [HttpPut]
-        [Route("/SetGoal")]
+        [HttpPut("/SetGoal")]
         public async Task<IActionResult> SetGoal()
         {
             // Getting Goal
@@ -56,7 +55,25 @@ namespace PresentationLayer.Controllers
             // Getting User Info
             var user = await _userService.GetOrCreateUserByIpAsync(ip);
             await _dailyUserInfoService.ChangeTodayGoalAsync(user.Id, goal);
-            return StatusCode(200);
+
+            return Ok(goal);
+        }
+
+        [HttpPost("/AddDish")]
+        public async Task<IActionResult> AddDish()
+        {
+            // Getting dish Id
+            var dishId = int.Parse(Request.Headers["dishId"]);
+
+            // Getting User
+            var ip = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var user = await _userService.GetOrCreateUserByIpAsync(ip);
+
+            // Adding dish
+            await _dailyUserInfoService.AddDishAsync(user.Id, dishId);
+
+            var dish = await _dishService.GetByIdAsync(dishId);
+            return Ok(dish.Name);
         }
     }
 }

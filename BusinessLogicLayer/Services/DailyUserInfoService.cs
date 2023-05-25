@@ -48,6 +48,11 @@ public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInf
 
             goal = dailyInfo.KCalorieGoal;
 
+            foreach (var dish in dailyInfo.EatenDishes)
+            {
+                dish.ExampleDish = await _dishRepository.GetAsync(dish.ExampleDishId);
+            }
+
             fullInfo.Add(_mapper.Map<DailyUserInfoModel>(dailyInfo));
         }
         return fullInfo;
@@ -94,7 +99,7 @@ public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInf
         // Adding Dish
         var dish = await _dishRepository.GetAsync(dishId);
 
-        var additionDish = todayInfo.EatenDishes.FirstOrDefault(x => x.ExampleDish.Id == dishId);
+        var additionDish = todayInfo.EatenDishes.FirstOrDefault(x => x.ExampleDishId == dishId);
 
         if (additionDish == null)
         {

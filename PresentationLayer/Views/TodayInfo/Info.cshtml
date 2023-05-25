@@ -32,13 +32,15 @@
                 goalButton = "Change Calorie Goal";
             }
         }
-        <div class="shortInfo-calorie">
-            @Model.KCalorieReal@goal kcal
-        </div>
+        @Model.KCalorieReal
+        <text class="shortInfo-goal">
+            @goal kcal
+        </text>
         <div class="shortInfo-buttonsArea">
-        <input class="shortInfo-goalInput" type="number" min="0"/>
-         kcal 
-        <input class="shortInfo-goalButton" type="button" onclick="SetCalorieGoal()" value="@goalButton" />
+            <input class="shortInfo-goalInput" type="number" min="0"/>
+                kcal 
+            <input class="shortInfo-goalButton" type="button" onclick="SetCalorieGoal()" value="@goalButton" />
+            <div class='shortInfo-error'></div>
         </div>
     </div>
     <br />

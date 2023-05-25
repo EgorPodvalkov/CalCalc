@@ -17,31 +17,53 @@
         <a class="header-siteName" asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
         <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
     </div>
-    <input class="search" type="text" />
     <h2>Dishes</h2>
+    <div class="responce"></div>
     <table>
         <tr>
+            <td>
+                <table>
+                    <tr><td>Search</td></tr>
+                    <tr><td>
+                        <input class="search" type="text" />
+                    </td></tr>
+                </table>
+            </td>
+            <td>
+                <table class="calorie">
+                    <tr><td class="min-calorieHead">Min</td><td> - </td><td>Max</td></tr>
+                    <tr>
+                        <td>
+                            <input class="min-calorie" type="number" />
+                        </td>
+                        <td> - </td>
+                        <td>
+                            <input class="max-calorie" type="number" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+        <tr class="tableHead">
             <td>Name</td>
             <td>KCalories</td>
-            <td>Proteins</td>
-            <td>Fat</td>
-            <td>Carbongidrates</td>
+            <td>Fat / Proteins / Carbongidrates</td>
         </tr>
     @foreach (var dish in Model)
     {
         <tr>
             <td>@dish.Name</td>
             <td>@dish.KCalorie kcal</td>
-            <td>@dish.Protein</td>
-            <td>@dish.TotalFat</td>
-            <td>@dish.Carbohydrates</td>
+            <td>@dish.TotalFat / @dish.Protein / @dish.Carbohydrates</td>
             <td>
-                <input type="button" value="Add to Eaten"/>
+                <input type="button" value="Add to Eaten" onclick="AddEatenDish(@dish.Id)"/>
             </td>
 
         </tr>
     }
 
     </table>
+    <script src="~/js/DishList.js"></script>
 </body>
 </html>
