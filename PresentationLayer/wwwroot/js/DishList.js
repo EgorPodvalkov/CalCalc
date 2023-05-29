@@ -47,33 +47,23 @@ async function GetDishes() {
 
     // Responce handler
     if (responce.ok) {
-        const tableHead = `
-        <tr class="tableHead">
-            <td>Name</td>
-            <td>KCalories</td>
-            <td>Fat / Proteins / Carbongidrates</td>
-        </tr>`;
-
-        const tableElem = document.querySelector(".table");
         const dishes = await responce.json();
-        
-
-        // Adding Head of Table
-        tableElem.innerHTML = tableHead;
-
         // Generating Body of Table
         if (dishes.length == 0) {
             statusElem.innerText = "No dishes matching your filter.";
         }
-
-        for (let index = 0; index < dishes.length; index++) {
-            const dish = dishes[index];
-            tableElem.innerHTML += `<tr>
-            <td>${dish.name}</td>
-            <td>${dish.kCalorie} kcal</td>
-            <td>${dish.totalFat} / ${dish.protein} / ${dish.carbohydrates}</td>
-            <td><input type="button" value="Add to Eaten" onclick="AddEatenDish(${dish.Id})"/></td>
-            <tr>`
+        else { 
+            const tableElem = document.querySelector(".table_body");
+            tableElem.innerHTML = "";
+            for (let index = 0; index < dishes.length; index++) {
+                const dish = dishes[index];
+                tableElem.innerHTML += `<tr>
+                    <th>${dish.name}</th>
+                    <td>${dish.kCalorie} KCal</td>
+                    <td>${dish.totalFat} / ${dish.protein} / ${dish.carbohydrates}</td>
+                    <td><input class="adding_button" type="button" value="Add to Eaten" onclick="AddEatenDish(${dish.id})"/></td>
+                    </tr>`;
+            }
         }
     }
     else {

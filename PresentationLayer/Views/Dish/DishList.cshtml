@@ -11,46 +11,99 @@
     <meta charset="utf-8" />
     <title>Dishes</title>
     <link rel="stylesheet" href="~/css/DishList.css" />
+    <link rel="stylesheet" href="~/css/tableStyle.css" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <!-- style css -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <!-- Responsive-->
+    <link rel="stylesheet" href="~/css/responsive.css" />
 </head>
 <body>
-    <div class="header">
-        <a class="header-siteName" asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
-        <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
+    <!-- loader  -->
+    <div class="loader_bg">
+        <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
     </div>
-    <h2>Dishes</h2>
+    <!-- end loader -->
+    <div class="full_bg">
+        <!-- header -->
+        <header class="header-area">
+            <div class="container">
+                <div class="row d_flex">
+                    <div class=" col-md-3 col-sm-3">
+                        <div class="logo">
+                            <a asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-9">
+                        <div class="navbar-area">
+                            <nav class="site-navbar">
+                                <ul>
+                                    <li><a asp-controller="TodayInfo" asp-action="Info">Home</a></li>
+                                    <li><a asp-controller="TodayInfo" asp-action="Info">All Time Stats</a></li>
+                                    <li><a class="active" asp-controller="Dish" asp-action="DishList">Dish List</a></li>
+                                    <li><a asp-controller="TodayInfo" asp-action="Info">About</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="col-md-12">
+            <h2>Dishes</h2>
     
-    Search <br />
-    <input class="search" type="text" /><br />
-    
-    Min KCalories <br />
-    <input class="min-calorie" type="number" /> <br />
-    
-    Max KCalories <br />
-    <input class="max-calorie" type="number" /> <br />
+            <table class="filter_table">
+                <tr>
+                    <th class="filter_field">Search</th>
+                    <th class="filter_field">Min KCalories</th>
+                    <th class="filter_field">Max KCalories</th>
+                </tr>
+                <tr>
+                    <td class="filter_field">
+                        <input class="search" type="text" />
+                    </td>
+                    <td class="filter_field">
+                        <input class="min-calorie" type="number" min="0" />
+                    </td>
+                    <td class ="filter_field">
+                        <input class="max-calorie" type="number" min="0" />
+                    </td>
+                </tr>
+            </table>
 
-    <div class="responce"></div>
+            <p class="responce"></p>
+            
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>KCalories</th>
+                        <th>Fat / Proteins / Carbongidrates</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody class="table_body">
+                    @foreach (var dish in Model)
+                    {
+                        <tr>
+                            <th>@dish.Name</th>
+                            <td>@dish.KCalorie KCal</td>
+                            <td>@dish.TotalFat / @dish.Protein / @dish.Carbohydrates</td>
+                            <td>
+                                <input class="adding_button" type="button" value="Add to Eaten" onclick="AddEatenDish(@dish.Id)"/>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="status"></div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tr class="tableHead">
-            <td>Name</td>
-            <td>KCalories</td>
-            <td>Fat / Proteins / Carbongidrates</td>
-        </tr>
-    @foreach (var dish in Model)
-    {
-        <tr>
-            <td>@dish.Name</td>
-            <td>@dish.KCalorie kcal</td>
-            <td>@dish.TotalFat / @dish.Protein / @dish.Carbohydrates</td>
-            <td>
-                <input type="button" value="Add to Eaten" onclick="AddEatenDish(@dish.Id)"/>
-            </td>
-
-        </tr>
-    }
-
-    </table>
-    <div class="status"></div>
     <script src="~/js/DishList.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/custom.js"></script>
 </body>
 </html>

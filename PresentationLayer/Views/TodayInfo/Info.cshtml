@@ -4,6 +4,145 @@
     Layout = null;
 }
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Info</title>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- css -->
+    <link rel="stylesheet" href="~/css/Info.css" />
+    <link rel="stylesheet" href="~/css/tableStyle.css" />
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <!-- style css -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <!-- Responsive-->
+    <link rel="stylesheet" href="~/css/responsive.css" />
+</head>
+<!-- body -->
+<body class="main-layout">
+    <!-- loader  -->
+    <div class="loader_bg">
+        <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
+    </div>
+    <!-- end loader -->
+    <div class="full_bg">
+        <!-- header -->
+        <header class="header-area">
+            <div class="container">
+                <div class="row d_flex">
+                    <div class=" col-md-3 col-sm-3">
+                        <div class="logo">
+                            <a asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-9">
+                        <div class="navbar-area">
+                            <nav class="site-navbar">
+                                <ul>
+                                    <li><a class="active" asp-controller="TodayInfo" asp-action="Info">Home</a></li>
+                                    <li><a asp-controller="TodayInfo" asp-action="Info">All Time Stats</a></li>
+                                    <li><a asp-controller="Dish" asp-action="DishList">Dish List</a></li>
+                                    <li><a asp-controller="TodayInfo" asp-action="Info">About</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="col-md-12">
+            <div class="creative">
+                <h1>Today Progress</h1>
+                <div class="info_data">            
+                    @Model.Date.ToString("d")
+                </div>
+                <p>
+                    @{
+                        var goal = "";
+                        var goalButton = "Add Calorie Goal";
+                        if (Model.KCalorieGoal != null)
+                        {
+                            goal = $" / {Model.KCalorieGoal}";
+                            goalButton = "Change Calorie Goal";
+                        }
+                    }
+                    <text class="shortInfo-KCalorie">
+                        @Model.KCalorieReal
+                    </text><text class="shortInfo-goal">
+                        @goal kcal
+                    </text><br>
+                    <input class="shortInfo-goalInput" type="number" min="0" />
+                    kcal <br>
+                    <input class="shortInfo-goalButton" type="button" onclick="SetCalorieGoal()" value="@goalButton" />
+                    <div class='shortInfo-error'></div>
+                </p>
+                <a class="read_more" asp-controller="Dish" asp-action="DishList">Add Dish</a>
+                <a class="read_more" asp-controller="TodayInfo" asp-action="Info">Calorie Chart</a>
+                <p class="error"></p>
+            </div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Dish Name</th>
+                        <th>Total KCalories</th>
+                        <th>Quantity</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody class="table_body">
+                    @{
+                        if (Model.EatenDishes.Count == 0)
+                        {
+                            <tr>
+                                <th>No Dishes Eaten Yet :|</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            var index = 0;
+                            foreach (var dish in Model.EatenDishes)
+                            {
+                                <tr class="alert" role="alert">
+                                    <th scope="row">@dish.Name</th>
+                                    <td>@(dish.KCalorie * dish.Quantity) KCal</td>
+                                    <td>@dish.Quantity</td>
+                                    <td><input class="removing_button" type="button" value="Remove 1" onclick="RemoveDish(@index)"></td>
+                                </tr>
+                                index++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Javascript files-->
+    <script src="~/js/Info.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/custom.js"></script>
+
+</body>
+</html>
+
+@*
+
+
+
 <!DOCTYPE html>
 
 <html>
@@ -71,3 +210,4 @@
 </body>
 </html>
 
+*@

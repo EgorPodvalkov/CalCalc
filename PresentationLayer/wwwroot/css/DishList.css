@@ -1,40 +1,8 @@
-﻿body {
-    background-color: aliceblue;
-    font-size: 24px;
-    margin: 0px;
+﻿.filter_table {
+    max-width: calc(40% - 35px);
 }
-/*header*/
-.header {
-    padding: 6px;
-    position: relative;
-    height: 22px;
-    background-color: darkslategrey;
-}
-
-.header-link, .header-siteName {
-    position: absolute;
-    top: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    outline: none;
-    text-decoration: none;
-    color: gold;
-}
-
-.header-link:hover, .header-siteName:hover {
-    text-shadow: 0 2px 18px black;
-}
-
-.header-siteName {
-    left: 10px;
-}
-
-.header-link {
-    right: 10px;
-}
-/*table*/
-.tableHead{
-    font-weight: bold;
+.filter_field {
+    padding-right: 25px;
 }
 .search{
     width:200px;
@@ -46,8 +14,12 @@
     padding-left: 5px;
 }
 .min-calorie, .max-calorie {
-    width: 65px;
+    width: 100px;
 }
 .min-calorieHead{
     text-align:right;
+}
+.adding_button{
+    border: 0;
+    border-radius: 10px;
 }

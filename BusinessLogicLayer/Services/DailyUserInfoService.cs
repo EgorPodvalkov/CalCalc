@@ -143,7 +143,8 @@ public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInf
         else
             todayInfo.EatenDishes.Remove(dish);
 
-        todayInfo.KCalorieReal -= dish.ExampleDish.KCalorie;
+        var exampleDish = await _dishRepository.GetAsync(dish.ExampleDishId);
+        todayInfo.KCalorieReal -= exampleDish.KCalorie;
 
         // Updating
         await _dailyUserInfoRepository.UpdateAsync(todayInfo);

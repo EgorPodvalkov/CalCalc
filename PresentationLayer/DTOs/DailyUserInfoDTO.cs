@@ -9,6 +9,5 @@ public class DailyUserInfoDTO
     public int? KCalorieGoal { get; set; }
     public int UserId { get; set; }
 
-    public UserDTO User { get; set; }
     public ICollection<DishDTO> EatenDishes { get; set; } = new List<DishDTO>();
 }

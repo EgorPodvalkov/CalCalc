@@ -44,3 +44,73 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+
+async function GetUserInfo() {
+    const url = `/GetUserInfo`;
+    const responce = await fetch(url, {
+        method: 'GET'
+    });
+
+    // Responce Handler
+    if (responce.ok) {
+        const info = await responce.json();
+
+        const calorie = document.querySelector(".shortInfo-KCalorie");
+        const tableBody = document.querySelector(".table_body");
+
+        // Calorie
+        calorie.innerText = info.kCalorieReal;
+
+        // Dishes
+        const dishes = info.eatenDishes;
+        if (dishes.length == 0) {
+            tableBody.innerHTML =
+                `<tr>
+                    <th>No Dishes Eaten Yet :|</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>`;
+        }
+        else {
+            tableBody.innerHTML = "";
+            for (let i = 0; i < dishes.length; i++) {
+                tableBody.innerHTML +=
+                    `<tr class="alert" role="alert">
+                        <th scope="row">${dishes[i].name}</th>
+                        <td>${dishes[i].kCalorie * dishes[i].quantity} KCal</td>
+                        <td>${dishes[i].quantity}</td>
+                        <td><input class="removing_button" type="button" value="Remove 1" onclick="RemoveDish(${i})"></td>
+                    </tr>`;
+            }
+        }
+    }
+    else {
+        const tableBody = document.querySelector(".table_body");
+        tableBody.innerHTML =
+            `<tr>
+                <th>Something Wrong with Getting info :(</th>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>`;
+    }
+}
+
+async function RemoveDish(index) {
+    const errElem = document.querySelector(".error");
+    errElem.innerText = "";
+
+    const url = `/RemoveDish/${index}`;
+    const responce = await fetch(url, {
+        method: 'DELETE'
+    });
+
+    // Responce Handler
+    if (responce.ok) {
+        await GetUserInfo();
+    }
+    else {
+        errElem.innerText = "Something Wrong with Removing. Try to reload page.";
+    }
+}
