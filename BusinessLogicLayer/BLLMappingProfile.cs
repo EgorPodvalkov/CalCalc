@@ -2,6 +2,7 @@
 using BusinessLogicLayer.DeserializeModels;
 using BusinessLogicLayer.Models;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Filters;
 
 namespace BusinessLogicLayer;
 
@@ -51,5 +52,8 @@ public class BLLMappingProfile : Profile
                 .MapFrom(src => $"{src.Carbohydrates}g"))
             .ForMember(dest => dest.Protein, opt => opt
                 .MapFrom(src => $"{src.Protein}g"));
+
+        CreateMap<DishFilterModel, DishFilter>();
+
     }
 }
