@@ -149,4 +149,39 @@ public class DailyUserInfoService : BaseService<DailyUserInfoModel, DailyUserInf
         // Updating
         await _dailyUserInfoRepository.UpdateAsync(todayInfo);
     }
+
+    public async Task<ChartInfoModel> GetChartInfoAsync(int userId, int days = 30)
+    {
+        // Getting user info
+        var userInfo = (await _dailyUserInfoRepository.GetAllAsync())
+            .Where(x => x.UserId == userId);
+
+        // Creating ChartInfo
+        var chart = new ChartInfoModel();
+
+        // Loop for each day from (today - days) to today
+        for (var day = DateTime.Today.AddDays(-days); day <= DateTime.Today ; day = day.AddDays(1))
+        {
+            // Adding date to Chart Info
+            chart.Dates.Add(day.ToString("d"));
+
+            // Getting day info
+            var dayInfo = userInfo.FirstOrDefault(x => x.Date == day);
+
+            // Adding info
+            if (dayInfo != null)
+            {
+                chart.CalorieGoals.Add(dayInfo.KCalorieGoal);
+                chart.RealCalories.Add(dayInfo.KCalorieReal);
+            }
+            // Adding null if no info
+            else
+            {
+                chart.CalorieGoals.Add(null);
+                chart.RealCalories.Add(null);
+            }
+        }
+
+        return chart;
+    }
 }

@@ -51,7 +51,7 @@
                             <nav class="site-navbar">
                                 <ul>
                                     <li><a class="active" asp-controller="TodayInfo" asp-action="Info">Home</a></li>
-                                    <li><a asp-controller="TodayInfo" asp-action="Info">All Time Stats</a></li>
+                                    <li><a asp-controller="AllTimeInfo" asp-action="Chart">All Time Stats</a></li>
                                     <li><a asp-controller="Dish" asp-action="DishList">Dish List</a></li>
                                     <li><a asp-controller="TodayInfo" asp-action="Info">About</a></li>
                                 </ul>
@@ -89,7 +89,7 @@
                     <div class='shortInfo-error'></div>
                 </p>
                 <a class="read_more" asp-controller="Dish" asp-action="DishList">Add Dish</a>
-                <a class="read_more" asp-controller="TodayInfo" asp-action="Info">Calorie Chart</a>
+                <a class="read_more" asp-controller="AllTimeInfo" asp-action="Chart">Calorie Chart</a>
                 <p class="error"></p>
             </div>
             <table class="table">
@@ -138,76 +138,3 @@
 
 </body>
 </html>
-
-@*
-
-
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Info</title>
-    <link rel="stylesheet" href="~/css/Info.css" />
-</head>
-<body>
-    <div class="header">
-        <a class="header-siteName" asp-controller="TodayInfo" asp-action="Info">CalCalc</a>
-        <a class="header-link" asp-controller="Dish" asp-action="DishList">List of Dishes</a>
-    </div>
-
-    <div class="shortInfo">
-        Today Progress
-        <div class="shortInfo-date">
-            @Model.Date.ToString("d")
-        </div>
-        @{
-            var goal = "";
-            var goalButton = "Add Calorie Goal";
-            if (Model.KCalorieGoal != null)
-            {
-                goal = $" / {Model.KCalorieGoal}";
-                goalButton = "Change Calorie Goal";
-            }
-        }
-        @Model.KCalorieReal
-        <text class="shortInfo-goal">
-            @goal kcal
-        </text>
-        <div class="shortInfo-buttonsArea">
-            <input class="shortInfo-goalInput" type="number" min="0"/>
-                kcal 
-            <input class="shortInfo-goalButton" type="button" onclick="SetCalorieGoal()" value="@goalButton" />
-            <div class='shortInfo-error'></div>
-        </div>
-    </div>
-    <br />
-    <div class="eatenTable">
-        <a class="eatenTable-addingButton" asp-controller="Dish" asp-action="DishList">Add Food</a>
-        <table class="eatenTable-table">
-            @foreach (var dish in Model.EatenDishes)
-            {
-                var quantity = "";
-                if (dish.Quantity > 1)
-                {
-                    quantity = $"x{dish.Quantity}";
-                }
-                
-                <tr>
-                    <td>@dish.Name</td>
-                    <td>@dish.KCalorie kcal</td>
-                    <td>@quantity</td>
-                    <td>
-                        <input class="eatenTable-table-removeButton" type ="button" value="-1" />
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-
-    <script src="~/js/Info.js"></script>
-</body>
-</html>
-
-*@

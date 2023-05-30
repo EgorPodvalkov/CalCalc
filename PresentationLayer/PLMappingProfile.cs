@@ -19,5 +19,7 @@ public class PLMappingProfile : Profile
             .ReverseMap();
 
         CreateMap<DishFilterDTO, DishFilterModel>();
+
+        CreateMap<ChartInfoModel, ChartInfoDTO>();
     }
 }
