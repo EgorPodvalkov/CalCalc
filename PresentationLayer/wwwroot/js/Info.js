@@ -80,7 +80,7 @@ async function GetUserInfo() {
                         <th scope="row">${dishes[i].name}</th>
                         <td>${dishes[i].kCalorie * dishes[i].quantity} KCal</td>
                         <td>${dishes[i].quantity}</td>
-                        <td><input class="removing_button" type="button" value="Remove 1" onclick="RemoveDish(${i})"></td>
+                        <td><input class="removing_button" type="button" value="Remove" onclick="RemoveDish(${i})"></td>
                     </tr>`;
             }
         }

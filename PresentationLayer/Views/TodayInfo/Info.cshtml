@@ -53,7 +53,7 @@
                                     <li><a class="active" asp-controller="TodayInfo" asp-action="Info">Home</a></li>
                                     <li><a asp-controller="AllTimeInfo" asp-action="Chart">All Time Stats</a></li>
                                     <li><a asp-controller="Dish" asp-action="DishList">Dish List</a></li>
-                                    <li><a asp-controller="TodayInfo" asp-action="Info">About</a></li>
+                                    <li><a asp-controller="About" asp-action="About">About</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -121,7 +121,7 @@
                                     <th scope="row">@dish.Name</th>
                                     <td>@(dish.KCalorie * dish.Quantity) KCal</td>
                                     <td>@dish.Quantity</td>
-                                    <td><input class="removing_button" type="button" value="Remove 1" onclick="RemoveDish(@index)"></td>
+                                    <td><input class="removing_button" type="button" value="Remove" onclick="RemoveDish(@index)"></td>
                                 </tr>
                                 index++;
                             }

@@ -17,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- css -->
-    <link rel="stylesheet" href="~/css/Chart.css" />
+    <link rel="stylesheet" href="~/css/About.css" />
     <!-- bootstrap css -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
     <!-- style css -->
@@ -47,10 +47,9 @@
                             <nav class="site-navbar">
                                 <ul>
                                     <li><a asp-controller="TodayInfo" asp-action="Info">Home</a></li>
-                                    <li><a class="active" asp-controller="AllTimeInfo" asp-action="Chart">All Time Stats</a></li>
+                                    <li><a asp-controller="AllTimeInfo" asp-action="Chart">All Time Stats</a></li>
                                     <li><a asp-controller="Dish" asp-action="DishList">Dish List</a></li>
-                                    <li><a asp-controller="About" asp-action="About">About</a></li>
-
+                                    <li><a class="active" asp-controller="About" asp-action="About">About</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -59,12 +58,17 @@
             </div>
         </header>
 
-        <canvas id="calorieChart"></canvas>
-        <p class="error"></p>
+        <p>
+            CalCalc (Calorie Calculator) is a Simple Website, which you can Track your Calorie Dynamic and get Calorie, Protein, Fats and Carbohydrates info of your eaten Dishes.
+        </p>
+        <p>
+            This is study project for corses named "New Generation"<br>
+            Author: Egor Podvalkov<br>
+            Mentor: Danyil Mykytenko
+        </p>
+
     </div>
     <!-- Javascript files-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="~/js/Chart.js"></script>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/custom.js"></script>
 
