@@ -1,11 +1,11 @@
 # CalCalc
 Project for NG courses. 
-<hr>
+<br><br>
 Mentor: Danyil Mykytenko<br>
 Author: Egor Podvalkov
-<hr>
+<br><br>
 Calorie Calculator is website for tracking calories and goals dynamic and getting calorie, proteins, fats and carbohydrates of dishes
-<hr>
+<br><br>
 Language: C# ASP.NET Core<br>
 Architechture: N-LAyer
 Pattern: Repository Service
